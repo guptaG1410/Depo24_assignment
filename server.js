@@ -107,7 +107,7 @@ app.get('/api/products/:id', (req, res) => {
 });
 
 // Static Files
-app.use(express.stativ(path.join(__dirname, './frontend/build')));
+app.use(express.static(path.join(__dirname, './frontend/build')));
 
 app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, './frontend/build/index.html'));
