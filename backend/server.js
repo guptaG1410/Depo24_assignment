@@ -2,6 +2,7 @@ import express from 'express';
 import stats from './data.js';
 import easyinvoice from 'easyinvoice';
 import fs from 'fs';
+import path from 'path';
 
 const app = express();
 
@@ -81,6 +82,8 @@ easyinvoice.createInvoice(data, async function (result) {
   await fs.writeFileSync('invoice.pdf', result.pdf, 'base64');
 });
 
+// USER ROUTES
+
 app.get('/api/products', (req, res) => {
   res.send(stats.products);
 });
@@ -101,6 +104,13 @@ app.get('/api/products/:id', (req, res) => {
   } else {
     res.status(404).send({ message: 'Product Not Found' });
   }
+});
+
+// Static Files
+app.use(express.stativ(path.join(__dirname, './frontend/build')));
+
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, './frontend/build/index.html'));
 });
 
 const port = process.env.PORT || 5443;
